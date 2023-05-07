@@ -10,5 +10,5 @@ This project is being developed to help to find and send automatic e-mails about
 _Note: Install correct version, accordind to your Chrome version_ <br>
 <sub>https://chromedriver.chromium.org/downloads</sub>
 
-**3º** Define the correct path of Chrome Driver .exe application in your code<br>
+**3º** Your 'chromedriver.exe' needs to be in the same directory of your 'main.py', or you can define the correct path of Chrome Driver .exe application in your code<br>
 <sub>driver = webdriver.Chrome("Chrome driver path here")</sub>
