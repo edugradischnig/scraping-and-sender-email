@@ -103,6 +103,4 @@ destinatary = searchByKeyWord(keyWord, driver)
 
 sendMail(driver, destinatary, subject, message)
 
-#email = searchByKeyWord(keyWord, driver)
-
 
