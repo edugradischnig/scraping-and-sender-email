@@ -6,6 +6,9 @@ Sugerimos que, antes de iniciar a execução, os seguintes fatores sejam levados
 abaixo, a fim de pular pop us de segurança que podem aparecer no primeiro login no dispositivo.
 scrapingemailucs@gmail.com
 qwe321##
+- Como as consultas são realizadas no Lookup do Registro.BR, domínios alocados fora da LACNIC
+não terão resultados nas consultas. Nesse caso a consulta pode ser realizada no Lookup específico
+do grupo ao qual o bloco do domínio pertence.
 """
 
 from selenium import webdriver
@@ -62,23 +65,31 @@ def sendMail(driver, destinatary, subject, message):
     password_field.send_keys(Keys.ENTER)
 
     time.sleep(5)
-    btn_compose = driver.find_element(By.XPATH, "/html/body/div[7]/div[3]/div/div[2]/div[1]/div[1]/div/div")
-    btn_compose.click()
-
-    time.sleep(2)
     
-    to_field = driver.find_element(By.ID, ":c0")
-    to_field.send_keys(destinatary)#email desinatário
+    try:
+        btn_compose = driver.find_element(By.XPATH, "/html/body/div[7]/div[3]/div/div[2]/div[1]/div[1]/div/div")
+        btn_compose.click()
+        time.sleep(2)
 
-    subject_field = driver.find_element(By.NAME, "subjectbox")
-    subject_field.send_keys(subject) #subject
+        try:
+            to_field = driver.find_element(By.XPATH, "//*[@id=':c1']")
+        except:
+            to_field = driver.find_element(By.ID, ":c0")
+        to_field.send_keys(destinatary)#email desinatário
 
-    text_field = driver.find_element(By.ID, ":9c")
-    text_field.send_keys(message) #message
+        subject_field = driver.find_element(By.NAME, "subjectbox")
+        subject_field.send_keys(subject) #subject
 
-    btn_send = driver.find_element(By.CLASS_NAME, "dC")
-    btn_send.click()
+        try:
+            text_field = driver.find_element(By.XPATH, "//*[@id=':9d']")
+        except:
+            text_field = driver.find_element(By.ID, ":9c")
+        text_field.send_keys(message) #message
 
+        btn_send = driver.find_element(By.CLASS_NAME, "dC")
+        btn_send.click()
+    except:
+        print("Ocorreu um erro ao tentar enviar o email. Tente novamente mais tarde!")
 
 print("Scraping mail")
 print("Para prosseguir, digite um domínio. Ex.:(ucsvirtual.ucs.br)")
@@ -101,6 +112,7 @@ driver = webdriver.Chrome()
 
 destinatary = searchByKeyWord(keyWord, driver)
 
-sendMail(driver, destinatary, subject, message)
+if(destinatary):
+    sendMail(driver, destinatary, subject, message)
 
 
