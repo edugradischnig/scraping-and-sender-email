@@ -88,6 +88,8 @@ def sendMail(driver, destinatary, subject, message):
 
         btn_send = driver.find_element(By.CLASS_NAME, "dC")
         btn_send.click()
+
+        print("Email enviado com sucesso!")
     except:
         print("Ocorreu um erro ao tentar enviar o email. Tente novamente mais tarde!")
 
